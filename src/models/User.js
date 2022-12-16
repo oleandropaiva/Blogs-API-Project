@@ -1,5 +1,10 @@
 'use strict';
 
+/** JSDoc
+* @param {import('sequelize').Sequelize} sequelize 
+* @param {import('sequelize').DataTypes} DataTypes 
+*/ 
+
 const User = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
     id: {
@@ -8,8 +13,8 @@ const User = (sequelize, DataTypes) => {
       primaryKey: true,
       type: DataTypes.INTEGER,
     },
-    display_name: {
-      // field: 'display_name',
+    displayName: {
+      field: 'display_name',
       allowNull: false,
       type: DataTypes.STRING,
     },
@@ -33,7 +38,7 @@ const User = (sequelize, DataTypes) => {
   User.associate = (models) => {
     User.hasMany(models.BlogPost, {
       foreignKey: 'userId',
-      as: 'blog_posts',
+      as: 'blogPosts',
     })
   }
   return User;

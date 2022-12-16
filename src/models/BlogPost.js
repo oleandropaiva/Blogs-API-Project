@@ -16,11 +16,10 @@ const BlogPost = (sequelize, DataTypes) => {
       allowNull: false,
       type: DataTypes.STRING,
     },
-    userId: {
-      // field: 'user_id',
+    user_id: {
       allowNull: false,
       type: DataTypes.INTEGER,
-      // references: { model: 'Users', key: 'id' }
+      references: { model: 'users', key: 'id' }
     },
     published: {
       allowNull: false,
@@ -33,12 +32,12 @@ const BlogPost = (sequelize, DataTypes) => {
   }, {
     createdAt: 'published',
     updatedAt: 'updated',
-    tableName: 'BlogPosts',
-    underscored: true,
+    tableName: 'blog_posts',
+    // underscored: true,
   })
   BlogPost.associate = (models) => {
     BlogPost.belongsTo(models.User, {
-      foreignKey: 'id',
+      foreignKey: 'userId',
       as: 'user',
     })
   }

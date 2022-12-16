@@ -1,6 +1,6 @@
 'use strict';
 
-const categoriesCreate = (sequelize, DataTypes) => {
+const categories = (sequelize, DataTypes) => {
   const Category = sequelize.define('Category', {
     id: {
       allowNull: false,
@@ -19,4 +19,4 @@ const categoriesCreate = (sequelize, DataTypes) => {
   return Category;
 };
 
-module.exports = categoriesCreate;
+module.exports = categories;
