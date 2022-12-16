@@ -14,7 +14,6 @@ const User = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
     },
     display_name: {
-      //field: 'display_name',
       allowNull: false,
       type: DataTypes.STRING,
     },
