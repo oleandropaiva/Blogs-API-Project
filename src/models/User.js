@@ -13,8 +13,8 @@ const User = (sequelize, DataTypes) => {
       primaryKey: true,
       type: DataTypes.INTEGER,
     },
-    displayName: {
-      field: 'display_name',
+    display_name: {
+      // field: 'display_name',
       allowNull: false,
       type: DataTypes.STRING,
     },
@@ -34,6 +34,7 @@ const User = (sequelize, DataTypes) => {
   }, {
     timestamps: false,
     tableName: 'users',
+    underscored: true,
   })
   User.associate = (models) => {
     User.hasMany(models.BlogPost, {
