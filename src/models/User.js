@@ -13,7 +13,8 @@ const User = (sequelize, DataTypes) => {
       primaryKey: true,
       type: DataTypes.INTEGER,
     },
-    display_name: {
+    displayName: {
+      field: 'display_name',
       allowNull: false,
       type: DataTypes.STRING,
     },
