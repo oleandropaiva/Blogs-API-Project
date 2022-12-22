@@ -14,4 +14,14 @@ const addCategories = async (req, res) => {
   } 
 };
 
-module.exports = { addCategories };
+const getAllCategories = async (_req, res) => {
+  try {
+    const dataCategories = await categoriesService.getAllCategories();
+    return res.status(200).json(dataCategories);
+  } catch (error) {
+  console.log(error);
+  return res.status(500).json('Server error');
+  } 
+};
+
+module.exports = { addCategories, getAllCategories };

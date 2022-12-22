@@ -14,4 +14,9 @@ const addCategories = async ({ name }) => {
   return dataValues;
 };
 
-module.exports = { addCategories };
+const getAllCategories = async () => {
+  const dataCategories = await Category.findAll();
+  return dataCategories;
+};
+
+module.exports = { addCategories, getAllCategories };
