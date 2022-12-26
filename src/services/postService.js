@@ -1,4 +1,15 @@
-const { BlogPost, User } = require('../models');
+const { BlogPost, User, Category } = require('../models');
+
+const checkCategoryExists = async (categoryIds) => {
+  const { count } = await Category.findAndCountAll({
+    where: { id: categoryIds },
+  });
+  if (count !== categoryIds.length) {
+    return {      
+        message: 'one or more "categoryIds" not found',            
+    };
+  }
+};
 
 const checkUser = async (dataToken) => {
   const checkEmailUser = await User.findOne({
@@ -18,4 +29,4 @@ const createPost = async (dataPost, dataValues) => {
   return post;
 };
 
-module.exports = { createPost, checkUser };
+module.exports = { createPost, checkUser, checkCategoryExists };
