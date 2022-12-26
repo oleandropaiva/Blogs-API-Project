@@ -1,4 +1,4 @@
-const { BlogPost, User, Category } = require('../models');
+const { BlogPost, User, Category, PostCategory } = require('../models');
 
 const checkCategoryExists = async (categoryIds) => {
   const { count } = await Category.findAndCountAll({
@@ -6,9 +6,10 @@ const checkCategoryExists = async (categoryIds) => {
   });
   if (count !== categoryIds.length) {
     return {      
-        message: 'one or more "categoryIds" not found',            
+        message: 'one or more "categoryIds" not found',
     };
   }
+  return true;
 };
 
 const checkUser = async (dataToken) => {
@@ -19,12 +20,24 @@ const checkUser = async (dataToken) => {
 };
 
 const createPost = async (dataPost, dataValues) => {
+  const { categoryIds } = dataPost;
   const post = await BlogPost.create(
     {
       title: dataPost.title,
       content: dataPost.content,
       userId: dataValues.id,
     },
+  );
+  const { id } = post.dataValues;
+
+  await PostCategory.bulkCreate(
+    categoryIds.map((idValue) => (
+      // console.log('===>AQUI', idValue)
+      {
+        postId: id,
+        categoryId: idValue,
+      }
+    )),
   );
   return post;
 };
