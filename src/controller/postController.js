@@ -21,5 +21,14 @@ const createPost = async (req, res) => {
     return res.status(500).json('Server error');
     } 
 };
+const getPost = async (req, res) => {
+  try {
+    const dataGetPost = await postService.getPost();
+    return res.status(200).json(dataGetPost);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json('Server error');
+    } 
+};
 
-module.exports = { createPost };
+module.exports = { createPost, getPost };

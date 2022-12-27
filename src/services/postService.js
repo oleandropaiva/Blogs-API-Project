@@ -32,7 +32,6 @@ const createPost = async (dataPost, dataValues) => {
 
   await PostCategory.bulkCreate(
     categoryIds.map((idValue) => (
-      // console.log('===>AQUI', idValue)
       {
         postId: id,
         categoryId: idValue,
@@ -42,4 +41,14 @@ const createPost = async (dataPost, dataValues) => {
   return post;
 };
 
-module.exports = { createPost, checkUser, checkCategoryExists };
+const getPost = async () => {
+  const dataBlogPost = await BlogPost.findAll({
+    include: [
+      { model: User, as: 'user', attributes: { exclude: ['password'] } },
+      { model: Category, as: 'categories', through: { attributes: [] } },
+    ],
+  });
+  return dataBlogPost;
+};
+
+module.exports = { createPost, checkUser, checkCategoryExists, getPost };
