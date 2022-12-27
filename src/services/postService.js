@@ -71,7 +71,7 @@ const checkUserPost = async (id) => {
     where: { id },
   });
   if (data.length === 0) {
-    return { message: 'Post not found' };
+    return { message: 'Post does not exist' };
   }
   return data;
 };
@@ -105,6 +105,13 @@ const updatedId = async (id, title, content) => {
   return dataUpdatedPost;
 };
 
+const deletePostId = async (id) => {
+  await BlogPost.destroy({
+    where: { id },
+  });
+  return { message: 'Post deleted' };
+};
+
 module.exports = { 
   createPost,
   checkUser,
@@ -114,4 +121,5 @@ module.exports = {
   updatedId,
   checkUserLogin,
   checkUserPost,
+  deletePostId,
 };

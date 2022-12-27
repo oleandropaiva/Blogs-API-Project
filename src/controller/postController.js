@@ -1,6 +1,8 @@
 const postService = require('../services/postService');
 const { checkToken } = require('../token');
 
+const SEREVER_ERROR = 'Server error';
+
 const createPost = async (req, res) => {
   const dataPost = req.body;
   const { categoryIds } = req.body;
@@ -18,7 +20,7 @@ const createPost = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
-    return res.status(500).json('Server error');
+    return res.status(500).json(SEREVER_ERROR);
     } 
 };
 const getPost = async (req, res) => {
@@ -27,7 +29,7 @@ const getPost = async (req, res) => {
     return res.status(200).json(dataGetPost);
   } catch (error) {
     console.log(error);
-    return res.status(500).json('Server error');
+    return res.status(500).json(SEREVER_ERROR);
     } 
 };
 
@@ -41,7 +43,7 @@ const getId = async (req, res) => {
     return res.status(200).json(dataId[0]);
   } catch (error) {
     console.log(error);
-    return res.status(500).json('Server error');
+    return res.status(500).json(SEREVER_ERROR);
     }
 };
 
@@ -62,8 +64,28 @@ const updatedId = async (req, res) => {
     return res.status(200).json(dataPost);
   } catch (error) {
     console.log(error);
-    return res.status(500).json('Server error');
+    return res.status(500).json(SEREVER_ERROR);
     }
 };
 
-module.exports = { createPost, getPost, getId, updatedId };
+const deletePostId = async (req, res) => {
+  const { id } = req.params;
+  const { authorization } = req.headers;
+  try {
+    const checkPost = await postService.checkUserPost(id);
+    if (checkPost.message) {
+      return res.status(404).json(checkPost);
+    }
+    const checkUser = await postService.checkUserLogin(authorization, checkPost);
+    if (checkUser.message) {
+      return res.status(401).json(checkUser);
+    }
+    const dataPostId = await postService.deletePostId(id);
+    return res.status(204).json(dataPostId);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json(SEREVER_ERROR);
+    }
+};
+
+module.exports = { createPost, getPost, getId, updatedId, deletePostId };

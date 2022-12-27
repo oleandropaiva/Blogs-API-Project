@@ -14,4 +14,6 @@ validToken.midValidToken,
 validUpdate.midValidValidUpdate,
 postController.updatedId);
 
+routePost.delete('/:id', validToken.midValidToken, postController.deletePostId);
+
 module.exports = routePost;
