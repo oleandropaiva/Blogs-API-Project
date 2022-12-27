@@ -51,4 +51,18 @@ const getPost = async () => {
   return dataBlogPost;
 };
 
-module.exports = { createPost, checkUser, checkCategoryExists, getPost };
+const getId = async (id) => {
+  const dataId = await BlogPost.findAll({
+    where: { id },
+    include: [
+      { model: User, as: 'user', attributes: { exclude: ['password'] } },
+      { model: Category, as: 'categories', through: { attributes: [] } },
+    ],
+  });
+  if (dataId.length === 0) {
+    return { message: 'Post does not exist' };
+  }
+  return dataId;
+};
+
+module.exports = { createPost, checkUser, checkCategoryExists, getPost, getId };

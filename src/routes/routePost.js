@@ -7,5 +7,6 @@ const postController = require('../controller/postController');
 
 routePost.post('/', validToken.midValidToken, validPost.postValid, postController.createPost);
 routePost.get('/', validToken.midValidToken, postController.getPost);
+routePost.get('/:id', validToken.midValidToken, postController.getId);
 
 module.exports = routePost;

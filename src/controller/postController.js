@@ -31,4 +31,18 @@ const getPost = async (req, res) => {
     } 
 };
 
-module.exports = { createPost, getPost };
+const getId = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const dataId = await postService.getId(id);
+    if (dataId.message) {
+      return res.status(404).json(dataId);
+    }
+    return res.status(200).json(dataId);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json('Server error');
+    }
+};
+
+module.exports = { createPost, getPost, getId };
