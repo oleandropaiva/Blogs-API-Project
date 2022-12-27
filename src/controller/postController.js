@@ -38,7 +38,7 @@ const getId = async (req, res) => {
     if (dataId.message) {
       return res.status(404).json(dataId);
     }
-    return res.status(200).json(dataId);
+    return res.status(200).json(dataId[0]);
   } catch (error) {
     console.log(error);
     return res.status(500).json('Server error');
