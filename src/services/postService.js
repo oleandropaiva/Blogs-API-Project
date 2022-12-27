@@ -1,4 +1,5 @@
 const { BlogPost, User, Category, PostCategory } = require('../models');
+const { checkToken } = require('../token');
 
 const checkCategoryExists = async (categoryIds) => {
   const { count } = await Category.findAndCountAll({
@@ -65,4 +66,52 @@ const getId = async (id) => {
   return dataId;
 };
 
-module.exports = { createPost, checkUser, checkCategoryExists, getPost, getId };
+const checkUserPost = async (id) => {
+  const data = await BlogPost.findAll({
+    where: { id },
+  });
+  if (data.length === 0) {
+    return { message: 'Post not found' };
+  }
+  return data;
+};
+
+const checkUserLogin = async (authorization, checkPost) => {
+  const { dataValues } = checkPost[0];
+  const email = await checkToken(authorization);
+  const user = await User.findOne({
+    where: { email },
+  });
+  if (dataValues.userId !== user.id) {
+    return { message: 'Unauthorized user' };
+  }
+  return checkPost;
+};
+
+const updatedId = async (id, title, content) => {
+  await BlogPost.update(
+    { title, content },
+    { where: { id } },
+  );
+  const dataUpdatedPost = await BlogPost.findOne(
+    { 
+      where: { id },
+      include: [
+        { model: User, as: 'user', atributes: { exclude: ['password'] } },
+        { model: Category, as: 'categories', through: { attributes: [] } },
+      ],
+    },
+  );
+  return dataUpdatedPost;
+};
+
+module.exports = { 
+  createPost,
+  checkUser,
+  checkCategoryExists,
+  getPost,
+  getId,
+  updatedId,
+  checkUserLogin,
+  checkUserPost,
+};

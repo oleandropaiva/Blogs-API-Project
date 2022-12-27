@@ -45,4 +45,25 @@ const getId = async (req, res) => {
     }
 };
 
-module.exports = { createPost, getPost, getId };
+const updatedId = async (req, res) => {
+  const { id } = req.params;
+  const { title, content } = req.body;
+  const { authorization } = req.headers;
+  try {
+    const checkPost = await postService.checkUserPost(id);
+    if (checkPost.message) {
+      return res.status(401).json(checkPost);
+    }
+    const checkUser = await postService.checkUserLogin(authorization, checkPost);
+    if (checkUser.message) {
+      return res.status(401).json(checkUser);
+    }
+    const dataPost = await postService.updatedId(id, title, content);
+    return res.status(200).json(dataPost);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json('Server error');
+    }
+};
+
+module.exports = { createPost, getPost, getId, updatedId };
