@@ -14,7 +14,6 @@ const User = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
     },
     displayName: {
-      // field: 'display_name',
       allowNull: false,
       type: DataTypes.STRING,
     },
@@ -46,4 +45,3 @@ const User = (sequelize, DataTypes) => {
 };
 
 module.exports = User;
-// test

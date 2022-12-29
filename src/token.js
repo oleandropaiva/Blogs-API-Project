@@ -3,7 +3,6 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 const { JWT_SECRET } = process.env; 
-// const JWT_OPTIONS = { algorithm: 'HS256', expiresIn: '1d' };
 
 const checkToken = (token) => {
   try {

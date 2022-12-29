@@ -1,5 +1,5 @@
 const { User } = require('../models');
-const { newToken } = require('../token');
+const { newToken, checkToken } = require('../token');
 
 const addUser = async (reqUser) => {
   const dataUser = await User.findAll({ where: { email: reqUser.email } });
@@ -28,4 +28,19 @@ const getUser = async (id) => {
   return dataUser;
 };
 
-module.exports = { addUser, getAllUsers, getUser };
+const checkUser = async (authorization) => {
+  const dataEmail = await checkToken(authorization);
+
+  const { dataValues } = await User.findOne({ where: { email: dataEmail },
+    attributes: { exclude: ['password'] } });
+  if (dataValues.length === 0) {
+    return { message: 'User not found' };
+  }
+
+  await User.destroy({
+    where: { id: dataValues.id },
+  });
+  return { code: 204 };
+};
+
+module.exports = { addUser, getAllUsers, getUser, checkUser };

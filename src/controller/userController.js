@@ -39,4 +39,18 @@ const getUser = async (req, res) => {
     } 
 };
 
-module.exports = { addUser, getAllUsers, getUser };
+const deleteUser = async (req, res) => {
+  const { authorization } = req.headers;
+  try {
+    const user = await userService.checkUser(authorization);
+    if (user.message) {
+      return res.status(404).json(user);
+    }
+    return res.status(user.code).json({ message: 'ok' });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json('Server error');
+    } 
+};
+
+module.exports = { addUser, getAllUsers, getUser, deleteUser };
